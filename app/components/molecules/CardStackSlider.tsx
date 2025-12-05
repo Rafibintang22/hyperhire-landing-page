@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, Variants } from 'framer-motion';
 import CardPeople, { PeopleItem } from '../atoms/CardPeople';
 import Image from 'next/image';
 
@@ -33,49 +33,62 @@ export default function CardStackSlider({ data }: Props) {
     { item: data[rightIndex], pos: 'right' },
   ];
 
-  const variants = {
+  const variants: Variants = {
     center: {
       scale: 1,
       x: 0,
       opacity: 1,
       zIndex: 20,
-      transition: { duration: 0.45, ease: 'easeInOut' },
+      transition: {
+        duration: 0.45,
+        ease: [0.42, 0, 0.58, 1],
+      },
     },
+
     left: {
       scale: 0.85,
       x: -140,
       opacity: 0.6,
       zIndex: 10,
-      transition: { duration: 0.45, ease: 'easeInOut' },
+      transition: {
+        duration: 0.45,
+        ease: [0.42, 0, 0.58, 1],
+      },
     },
+
     right: {
       scale: 0.85,
       x: 140,
       opacity: 0.6,
       zIndex: 10,
-      transition: { duration: 0.45, ease: 'easeInOut' },
+      transition: {
+        duration: 0.45,
+        ease: [0.42, 0, 0.58, 1],
+      },
     },
-    exitLeft: {
+
+    exitLeft: (direction: number) => ({
       x: -200 * direction,
       opacity: 0,
-      transition: { duration: 0.3 },
-    },
-    exitRight: {
+      transition: { duration: 0.3, ease: [0.42, 0, 0.58, 1] },
+    }),
+
+    exitRight: (direction: number) => ({
       x: 200 * direction,
       opacity: 0,
-      transition: { duration: 0.3 },
-    },
+      transition: { duration: 0.3, ease: [0.42, 0, 0.58, 1] },
+    }),
   };
 
   return (
     <div className="relative w-full flex items-center justify-center">
       <button onClick={prev} className="cursor-pointer absolute -left-5 z-30 px-3 py-2">
-        <Image src={'https://img.icons8.com/ios/100/FFFFFF/back--v1.png'} alt="arrow-r" width={20} height={20} />
+        <Image src="https://img.icons8.com/ios/100/FFFFFF/back--v1.png" alt="prev" width={20} height={20} />
       </button>
 
       <div className="relative w-[700px] h-[420px] flex items-center justify-center overflow-hidden">
         <AnimatePresence initial={false} custom={direction}>
-          {cards.map((card, i) => (
+          {cards.map((card) => (
             <motion.div
               key={card.pos + index}
               custom={direction}
@@ -91,7 +104,7 @@ export default function CardStackSlider({ data }: Props) {
       </div>
 
       <button onClick={next} className="cursor-pointer absolute -right-5 z-30 px-3 py-2">
-        <Image src={'https://img.icons8.com/ios/100/FFFFFF/forward--v1.png'} alt="arrow-r" width={20} height={20} />
+        <Image src="https://img.icons8.com/ios/100/FFFFFF/forward--v1.png" alt="next" width={20} height={20} />
       </button>
     </div>
   );
